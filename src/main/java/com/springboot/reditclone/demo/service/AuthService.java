@@ -1,6 +1,7 @@
 package com.springboot.reditclone.demo.service;
 
 
+import com.springboot.reditclone.demo.dto.LoginRequest;
 import com.springboot.reditclone.demo.dto.RegisterRequest;
 import com.springboot.reditclone.demo.exceptions.SpringRedditException;
 import com.springboot.reditclone.demo.model.NotificationEmail;
@@ -9,6 +10,9 @@ import com.springboot.reditclone.demo.model.VerificationToken;
 import com.springboot.reditclone.demo.repository.UserRepository;
 import com.springboot.reditclone.demo.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +32,9 @@ public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
 
     private final MailService mailService;
+
+    @Qualifier("authenticationManagerBean")
+    private final AuthenticationManager authenticationManager;
 
 
 
@@ -95,6 +102,17 @@ public class AuthService {
 
 
         return token;
+    }
+
+
+
+
+    public void login(LoginRequest loginRequest) {
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword()
+        ));
     }
 
 }

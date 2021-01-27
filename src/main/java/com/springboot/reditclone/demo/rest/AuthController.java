@@ -1,6 +1,7 @@
 package com.springboot.reditclone.demo.rest;
 
 
+import com.springboot.reditclone.demo.dto.LoginRequest;
 import com.springboot.reditclone.demo.dto.RegisterRequest;
 import com.springboot.reditclone.demo.model.User;
 import com.springboot.reditclone.demo.service.AuthService;
@@ -27,6 +28,16 @@ public class AuthController {
         return new ResponseEntity<>("User registration was successful. Username " +
                "\"" + registerRequset.getUsername() + "\"" + " and email " +
                 "\"" +  registerRequset.getEmail() + "\"", HttpStatus.OK);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+
+        authService.login(loginRequest);
+
+
+        return null;
     }
 
 

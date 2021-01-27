@@ -15,13 +15,16 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "comment")
 public class Comment {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
     private Long id;
 
 
     @NotEmpty
+    @Column(name = "text")
     private String text;
 
 
@@ -30,10 +33,9 @@ public class Comment {
     private Post post;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    private Instant createdDate;
 
 
 }

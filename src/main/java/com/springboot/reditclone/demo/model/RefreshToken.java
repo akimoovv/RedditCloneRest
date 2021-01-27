@@ -15,7 +15,13 @@ import java.time.Instant;
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "token")
     private String token;
+
+
+    @Column(name = "createdDate")
     private Instant createdDate;
 }

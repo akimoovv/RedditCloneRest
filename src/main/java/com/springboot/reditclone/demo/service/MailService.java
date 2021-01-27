@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 public class MailService {
 
     private final JavaMailSender mailSender;
-
-
     private final MailContentBuilder mailContentBuilder;
 
     void sendMail(NotificationEmail notificationEmail) {

@@ -19,16 +19,16 @@ public class VerificationToken {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
     private Long id;
 
 
+    @Column(name = "token")
     private String token;
 
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-
-    private Instant expiryDate;
 }

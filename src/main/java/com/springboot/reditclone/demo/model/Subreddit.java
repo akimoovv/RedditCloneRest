@@ -22,19 +22,22 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Subreddit {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotBlank(message = "Community name is required")
+    @Column(name = "name")
     private String name;
 
     @NotBlank(message = "Description is required")
+    @Column(name = "description")
     private String description;
 
     @OneToMany(fetch = LAZY)
     private List<Post> posts;
 
-    private Instant createdDate;
-
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
+
 }

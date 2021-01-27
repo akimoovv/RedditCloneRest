@@ -2,18 +2,18 @@ package com.springboot.reditclone.demo.rest;
 
 
 import com.springboot.reditclone.demo.dto.RegisterRequest;
+import com.springboot.reditclone.demo.model.User;
 import com.springboot.reditclone.demo.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
 
@@ -24,10 +24,20 @@ public class AuthController {
 
         authService.signUp(registerRequset);
 
-        return new ResponseEntity<>("User registration was successful. Uername" +
-                registerRequset.getUsername() + " and email " +
-                registerRequset.getEmail(), HttpStatus.OK);
+        return new ResponseEntity<>("User registration was successful. Username " +
+               "\"" + registerRequset.getUsername() + "\"" + " and email " +
+                "\"" +  registerRequset.getEmail() + "\"", HttpStatus.OK);
     }
 
+
+
+    @GetMapping("/accountVerification/{token}")
+    public ResponseEntity<String> verifyAccount(@PathVariable String token) {
+
+        authService.verifyAccount(token);
+
+
+        return new ResponseEntity<>("Account activeted succesfully", HttpStatus.OK);
+    }
 
 }

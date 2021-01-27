@@ -22,25 +22,30 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "postId")
     private Long postId;
 
     @NotBlank(message = "Post Name cannot be empty or Null")
+    @Column(name = "postName")
     private String postName;
 
     @Nullable
+    @Column(name = "url")
     private String url;
 
     @Nullable
     @Lob
+    @Column(name = "description")
     private String description;
 
+
+    @Column(name = "voteCount")
     private Integer voteCount = 0;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    private Instant createdDate;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")

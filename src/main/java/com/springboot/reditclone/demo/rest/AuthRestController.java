@@ -46,15 +46,12 @@ public class AuthRestController {
 
 
 
-
-
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
 
-        authService.login(loginRequest);
+        authService.login(request);
 
-
-        return new ResponseEntity<>("FUCK SHIT", HttpStatus.OK);
+        return new ResponseEntity<>("String", HttpStatus.OK);
     }
 
 

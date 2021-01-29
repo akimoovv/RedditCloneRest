@@ -109,11 +109,9 @@ public class AuthService {
 
     public void login(LoginRequest loginRequest) {
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),loginRequest.getPassword()
-        );
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+                loginRequest.getPassword()));
 
-        authenticationManager.authenticate(token);
     }
 
 }

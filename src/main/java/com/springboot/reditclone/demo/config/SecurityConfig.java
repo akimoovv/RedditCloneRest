@@ -23,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean(name = "authenticationManagerBean")
+    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -55,8 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
-
-
 
 
 }

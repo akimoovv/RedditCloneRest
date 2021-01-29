@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 () -> new SpringRedditException("User hasn't been found by name " + username)
         );
 
-        org.springframework.security.core.userdetails.User userDetails =
+        org.springframework.security.core.userdetails.User securityUser =
                 new org.springframework.security.core.userdetails.User(
                         user.getUsername(),
                         user.getPassword(),
@@ -35,6 +35,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         Role.ADMIN.getAuthorities()
                 );
 
-        return userDetails;
+        return securityUser;
     }
 }

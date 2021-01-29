@@ -8,14 +8,17 @@ import com.springboot.reditclone.demo.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthRestController {
 
 
     private final AuthService authService;
@@ -31,16 +34,6 @@ public class AuthController {
     }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-
-        authService.login(loginRequest);
-
-
-        return null;
-    }
-
-
 
     @GetMapping("/accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
@@ -50,5 +43,38 @@ public class AuthController {
 
         return new ResponseEntity<>("Account activeted succesfully", HttpStatus.OK);
     }
+
+
+
+
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+
+        authService.login(loginRequest);
+
+
+        return new ResponseEntity<>("FUCK SHIT", HttpStatus.OK);
+    }
+
+
+
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request,
+                                         HttpServletResponse response) {
+
+        SecurityContextLogoutHandler handler =
+                new SecurityContextLogoutHandler();
+
+        handler.logout(request,response, null);
+
+
+        return new ResponseEntity<>("Successful logout" , HttpStatus.OK);
+    }
+
+
+
 
 }

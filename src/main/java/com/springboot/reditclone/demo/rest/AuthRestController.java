@@ -3,7 +3,6 @@ package com.springboot.reditclone.demo.rest;
 
 import com.springboot.reditclone.demo.dto.LoginRequest;
 import com.springboot.reditclone.demo.dto.RegisterRequest;
-import com.springboot.reditclone.demo.model.User;
 import com.springboot.reditclone.demo.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -21,16 +19,18 @@ import java.util.List;
 public class AuthRestController {
 
 
+
+
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequset) {
+    public ResponseEntity<String> signup(@RequestBody RegisterRequest request) {
 
-        authService.signUp(registerRequset);
+        authService.signUp(request);
 
         return new ResponseEntity<>("User registration was successful. Username " +
-               "\"" + registerRequset.getUsername() + "\"" + " and email " +
-                "\"" +  registerRequset.getEmail() + "\"", HttpStatus.OK);
+               "\"" + request.getUsername() + "\"" + " and email " +
+                "\"" +  request.getEmail() + "\"", HttpStatus.OK);
     }
 
 
@@ -49,12 +49,10 @@ public class AuthRestController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
-        authService.login(loginRequest);
+        return authService.login(loginRequest);
 
-
-        return new ResponseEntity<>("FUCK SHIT", HttpStatus.OK);
     }
 
 
@@ -62,16 +60,9 @@ public class AuthRestController {
 
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request,
-                                         HttpServletResponse response) {
-
-        SecurityContextLogoutHandler handler =
-                new SecurityContextLogoutHandler();
-
-        handler.logout(request,response, null);
-
-
-        return new ResponseEntity<>("Successful logout" , HttpStatus.OK);
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(request, response, null);
     }
 
 

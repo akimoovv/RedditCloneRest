@@ -5,10 +5,13 @@ import com.springboot.reditclone.demo.model.Role;
 import com.springboot.reditclone.demo.model.User;
 import com.springboot.reditclone.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @AllArgsConstructor
 @Service("userDetailsServiceImpl")
@@ -32,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         true,
                         true,
                         true,
-                        Role.ADMIN.getAuthorities()
+                        Set.of(new SimpleGrantedAuthority("USER"))
                 );
 
         return securityUser;

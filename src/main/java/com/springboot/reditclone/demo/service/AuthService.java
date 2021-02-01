@@ -9,16 +9,22 @@ import com.springboot.reditclone.demo.model.User;
 import com.springboot.reditclone.demo.model.VerificationToken;
 import com.springboot.reditclone.demo.repository.UserRepository;
 import com.springboot.reditclone.demo.repository.VerificationTokenRepository;
+import com.springboot.reditclone.demo.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -35,6 +41,8 @@ public class AuthService {
 
     @Qualifier("authenticationManagerBean")
     private final AuthenticationManager authenticationManager;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
 
 
@@ -107,13 +115,19 @@ public class AuthService {
 
 
 
-    public void login(LoginRequest loginRequest) {
+    public ResponseEntity<?> login(LoginRequest request, String role) {
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),loginRequest.getPassword()
-        );
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getPassword(), request.getPassword()));
+            String token = jwtTokenProvider.createToken(request.getUsername(), role);
+            Map<Object, Object> response = new HashMap<>();
+            response.put("email", request.getUsername());
+            response.put("token", token);
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
+        }
 
-        authenticationManager.authenticate(token);
     }
 
 }

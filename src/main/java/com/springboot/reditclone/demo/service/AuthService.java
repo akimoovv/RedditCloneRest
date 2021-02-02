@@ -1,6 +1,7 @@
 package com.springboot.reditclone.demo.service;
 
 
+import com.springboot.reditclone.demo.dto.AuthenticationResponse;
 import com.springboot.reditclone.demo.dto.LoginRequest;
 import com.springboot.reditclone.demo.dto.RegisterRequest;
 import com.springboot.reditclone.demo.exceptions.SpringRedditException;
@@ -13,18 +14,14 @@ import com.springboot.reditclone.demo.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -49,7 +46,7 @@ public class AuthService {
     @Transactional
     public void verifyAccount(String token) {
        VerificationToken verificationToken = verificationTokenRepository.findByToken(token).orElseThrow(
-                () -> new SpringRedditException("Invalid Token")
+                () -> new SpringRedditException("Invalid Token", HttpStatus.UNAUTHORIZED)
         );
 
         fetchUserEnable(verificationToken);
@@ -62,7 +59,7 @@ public class AuthService {
        String username = verificationToken.getUser().getUsername();
 
        User user = userRepository.findByUsername(username).orElseThrow(
-               () -> new SpringRedditException("Can't find user by id")
+               () -> new SpringRedditException("Can't find user by id", HttpStatus.UNAUTHORIZED)
        );
 
        user.setEnabled(true);
@@ -115,18 +112,18 @@ public class AuthService {
 
 
 
-    public ResponseEntity<?> login(LoginRequest request, String role) {
+    public AuthenticationResponse login(LoginRequest request) {
 
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getPassword(), request.getPassword()));
-            String token = jwtTokenProvider.createToken(request.getUsername(), role);
-            Map<Object, Object> response = new HashMap<>();
-            response.put("email", request.getUsername());
-            response.put("token", token);
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
-        }
+       Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                request.getUsername(), request.getPassword()
+        ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return new AuthenticationResponse(request.getUsername() , token);
+
 
     }
 

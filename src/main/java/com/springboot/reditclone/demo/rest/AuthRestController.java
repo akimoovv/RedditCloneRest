@@ -1,6 +1,7 @@
 package com.springboot.reditclone.demo.rest;
 
 
+import com.springboot.reditclone.demo.dto.AuthenticationResponse;
 import com.springboot.reditclone.demo.dto.LoginRequest;
 import com.springboot.reditclone.demo.dto.RegisterRequest;
 import com.springboot.reditclone.demo.model.User;
@@ -49,9 +50,9 @@ public class AuthRestController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
 
-       return  authService.login(loginRequest, "ADMIN" );
+       return  authService.login(loginRequest);
 
     }
 

@@ -29,7 +29,7 @@ public class Comment {
 
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "postId", referencedColumnName = "postId")
+    @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
 
     @ManyToOne(fetch = LAZY)

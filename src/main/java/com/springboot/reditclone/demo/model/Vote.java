@@ -20,15 +20,15 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Vote {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "voteId")
+    @Column(name = "vote_id")
     private Long voteId;
 
-    @Column(name = "voteType")
+    @Column(name = "vote_type")
     private VoteType voteType;
 
     @NotNull
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "postId", referencedColumnName = "postId")
+    @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
 
     @ManyToOne(fetch = LAZY)

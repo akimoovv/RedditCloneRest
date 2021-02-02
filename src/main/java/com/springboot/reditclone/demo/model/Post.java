@@ -22,11 +22,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "postId")
+    @Column(name = "post_id")
     private Long postId;
 
     @NotBlank(message = "Post Name cannot be empty or Null")
-    @Column(name = "postName")
+    @Column(name = "post_name")
     private String postName;
 
     @Nullable
@@ -39,7 +39,7 @@ public class Post {
     private String description;
 
 
-    @Column(name = "voteCount")
+    @Column(name = "vote_count")
     private Integer voteCount = 0;
 
     @ManyToOne(fetch = LAZY)

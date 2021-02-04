@@ -127,4 +127,17 @@ public class AuthService {
 
     }
 
+
+    public User getCurrentUser() {
+        org.springframework.security.core.userdetails.User userDetails =
+                ( org.springframework.security.core.userdetails.User)SecurityContextHolder.
+                        getContext().getAuthentication().getPrincipal();
+
+        User user = userRepository.findByUsername(userDetails.getUsername())
+        .orElseThrow(() -> new SpringRedditException("User hasn't been found"));
+
+
+        return user;
+    }
+
 }

@@ -42,7 +42,7 @@ public class AuthRestController {
         authService.verifyAccount(token);
 
 
-        return new ResponseEntity<>("Account activeted succesfully", HttpStatus.OK);
+        return new ResponseEntity<>("Account was activeted succesfully", HttpStatus.OK);
     }
 
 

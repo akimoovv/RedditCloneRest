@@ -2,29 +2,28 @@ package com.springboot.reditclone.demo.service;
 
 
 import com.springboot.reditclone.demo.dto.PostRequest;
-import com.springboot.reditclone.demo.exceptions.SpringRedditException;
+import com.springboot.reditclone.demo.dto.PostResponse;
+import com.springboot.reditclone.demo.exceptions.PostNotFoundException;
 import com.springboot.reditclone.demo.exceptions.SubredditNotFoundException;
+import com.springboot.reditclone.demo.mapper.PostMapper;
 import com.springboot.reditclone.demo.model.Post;
 import com.springboot.reditclone.demo.model.Subreddit;
 import com.springboot.reditclone.demo.model.User;
 import com.springboot.reditclone.demo.repository.PostRepository;
 import com.springboot.reditclone.demo.repository.SubredditRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class PostService {
 
     private final SubredditRepository subredditRepository;
     private final AuthService authService;
     private final PostRepository postRepository;
-
-    public PostService(SubredditRepository subredditRepository, AuthService authService, PostRepository postRepository) {
-        this.subredditRepository = subredditRepository;
-        this.authService = authService;
-        this.postRepository = postRepository;
-    }
+    private final PostMapper postMapper;
 
     public Post save(PostRequest postRequest) {
         Subreddit subreddit = subredditRepository.findByUsername(postRequest.getSubredditName())
@@ -34,15 +33,21 @@ public class PostService {
         User user = authService.getCurrentUser();
 
 
-        Post post = Post.builder().postName(postRequest.getPostName())
-                .url(postRequest.getUrl())
-                .description(postRequest.getDescription())
-                .subreddit(subreddit)
-                .user(user).build();
+        Post post = postMapper.map(postRequest,user,subreddit);
 
         postRepository.save(post);
 
         return post;
+    }
+
+
+    @Transactional(readOnly = true)
+    public PostResponse getPost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id.toString()));
+
+
+        return postMapper.mapToDto(post);
     }
 
 

@@ -2,27 +2,32 @@ package com.springboot.reditclone.demo.mapper;
 
 
 import com.springboot.reditclone.demo.dto.SubredditDto;
-import com.springboot.reditclone.demo.model.Post;
 import com.springboot.reditclone.demo.model.Subreddit;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring")
-public interface SubredditMapper {
+@Component
+public class SubredditMapper {
 
 
-    @Mapping(source = "posts", target = "java(mapPosts(subreddit.getPosts()))")
-    SubredditDto subRedditToSubredditDto(Subreddit subreddit);
+
+    public Subreddit map(SubredditDto subredditDto) {
 
 
-    default Integer mapPosts(List<Post> numberOfPosts) {return numberOfPosts.size();}
+        return Subreddit.builder().name(subredditDto.getName())
+                .description(subredditDto.getDescription()).build();
+
+    }
 
 
-    @InheritInverseConfiguration
-    @Mapping(target = "posts", ignore = true)
-    Subreddit subredditDtoToSubreddit(SubredditDto subredditDto);
+    public SubredditDto mapToDto(Subreddit subreddit) {
 
+       return SubredditDto.builder()
+               .id(subreddit.getId())
+                .name(subreddit.getName())
+                .description(subreddit.getDescription())
+                .numberOfPosts(subreddit.getPosts().size())
+                .build();
+
+
+    }
 }

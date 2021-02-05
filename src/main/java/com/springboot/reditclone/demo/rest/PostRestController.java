@@ -5,9 +5,7 @@ import com.springboot.reditclone.demo.dto.PostRequest;
 import com.springboot.reditclone.demo.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -21,12 +19,20 @@ public class PostRestController {
         this.postService = postService;
     }
 
+
+
+    @PostMapping
     public ResponseEntity createPost(@RequestBody PostRequest postRequest) {
-
-
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(postService.save(postRequest));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getPost(@PathVariable Long id) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postService.getPost(id));
     }
 
 }

@@ -3,6 +3,7 @@ package com.springboot.reditclone.demo.config;
 
 import com.springboot.reditclone.demo.security.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

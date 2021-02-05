@@ -21,6 +21,7 @@ public class PostRestController {
         this.postService = postService;
     }
 
+    @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest) {
 
 
@@ -35,5 +36,7 @@ public class PostRestController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postService.getPost(id));
     }
+
+
 
 }

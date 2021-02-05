@@ -8,5 +8,5 @@ import java.util.Optional;
 
 
 public interface SubredditRepository extends JpaRepository<Subreddit, Long> {
-    Optional<Subreddit> findByUsername(String username);
+    Optional<Subreddit> findByName(String username);
 }

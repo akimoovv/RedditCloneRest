@@ -1,11 +1,13 @@
 package com.springboot.reditclone.demo.dto;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class SubredditDto {
     private Long id;
     private String name;
@@ -16,10 +18,4 @@ public class SubredditDto {
     public SubredditDto() {
     }
 
-    public SubredditDto(Long id, String name, String description, Integer numberOfPosts) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.numberOfPosts = numberOfPosts;
-    }
 }

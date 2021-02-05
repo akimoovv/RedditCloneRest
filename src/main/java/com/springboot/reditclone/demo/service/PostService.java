@@ -12,9 +12,13 @@ import com.springboot.reditclone.demo.model.Subreddit;
 import com.springboot.reditclone.demo.model.User;
 import com.springboot.reditclone.demo.repository.PostRepository;
 import com.springboot.reditclone.demo.repository.SubredditRepository;
+import com.springboot.reditclone.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,6 +28,7 @@ public class PostService {
     private final SubredditRepository subredditRepository;
     private final AuthService authService;
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final PostMapper postMapper;
 
     public Post save(PostRequest postRequest) {
@@ -51,6 +56,32 @@ public class PostService {
         return postMapper.mapToDto(post);
     }
 
+
+    public List<PostResponse> getAllPosts() {
+
+        return postRepository.findAll()
+                .stream().map(postMapper::mapToDto).collect(Collectors.toList());
+    }
+
+    public List<PostResponse> getPostsBySubreddit(Long id) {
+
+        Subreddit subreddit = subredditRepository.getOne(id);
+
+        return subreddit.getPosts().stream()
+                .map(postMapper::mapToDto).collect(Collectors.toList());
+
+
+    }
+
+    public List<PostResponse> getPostsByUsername(String username) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new SpringRedditException("user hasn't been found"));
+
+        return postRepository.findByUser(user).stream()
+                .map(postMapper::mapToDto).collect(Collectors.toList());
+
+    }
 
 
 }

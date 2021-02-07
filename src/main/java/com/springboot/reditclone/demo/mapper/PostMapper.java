@@ -9,7 +9,6 @@ import com.springboot.reditclone.demo.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor

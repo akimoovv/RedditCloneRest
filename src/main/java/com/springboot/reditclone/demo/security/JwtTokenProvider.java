@@ -4,6 +4,7 @@ package com.springboot.reditclone.demo.security;
 import com.springboot.reditclone.demo.exceptions.SpringRedditException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -21,6 +22,10 @@ public class JwtTokenProvider {
     private Key secretKey;
 
 
+    @Value("${jwt.expiration}")
+    private Long expirationTimeInMillSec;
+
+
     @PostConstruct
     public void init() {
         secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -30,7 +35,7 @@ public class JwtTokenProvider {
     public String generateToken(Authentication authentication) {
        User user = (User) authentication.getPrincipal();
        Date now = new Date(System.currentTimeMillis());
-       Date validate = new Date(now.getTime() + 100000 * 60 * 60);
+       Date validate = new Date(now.getTime() + expirationTimeInMillSec * 60 * 60 * 10);
 
        return Jwts.builder().setSubject(user.getUsername())
                .setIssuedAt(now)

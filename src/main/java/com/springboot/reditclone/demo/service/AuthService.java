@@ -134,11 +134,10 @@ public class AuthService {
                 ( org.springframework.security.core.userdetails.User)SecurityContextHolder.
                         getContext().getAuthentication().getPrincipal();
 
-        User user = userRepository.findByUsername(userDetails.getUsername())
+        return userRepository.findByUsername(userDetails.getUsername())
         .orElseThrow(() -> new SpringRedditException("User hasn't been found"));
 
 
-        return user;
     }
 
     public boolean isLoggedIn() {
@@ -147,4 +146,12 @@ public class AuthService {
 
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
+
+
+    public User getUserByName(String name) {
+
+        return userRepository.findByUsername(name)
+                .orElseThrow(() -> new SpringRedditException("User hasn't been found"));
+    }
+
 }

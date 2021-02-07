@@ -49,8 +49,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostResponse getPost(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(id.toString()));
+        Post post = getPostMap(id);
 
 
         return postMapper.mapToDto(post);
@@ -75,11 +74,25 @@ public class PostService {
 
     public List<PostResponse> getPostsByUsername(String username) {
 
+
+        return getPostMapsByUsername(username).stream()
+                .map(postMapper::mapToDto).collect(Collectors.toList());
+
+    }
+
+
+    public Post getPostMap(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
+    }
+
+
+    public List<Post> getPostMapsByUsername(String username) {
+
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new SpringRedditException("user hasn't been found"));
 
-        return postRepository.findByUser(user).stream()
-                .map(postMapper::mapToDto).collect(Collectors.toList());
+        return postRepository.findByUser(user);
 
     }
 

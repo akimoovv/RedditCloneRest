@@ -97,4 +97,10 @@ public class PostService {
     }
 
 
+    public Post saveMap(Post post) {
+
+
+        return postRepository.save(post);
+    }
+
 }

@@ -3,7 +3,6 @@ package com.springboot.reditclone.demo.service;
 
 import com.springboot.reditclone.demo.dto.VoteDto;
 import com.springboot.reditclone.demo.exceptions.SpringRedditException;
-import com.springboot.reditclone.demo.mapper.PostMapper;
 import com.springboot.reditclone.demo.mapper.VoteMapper;
 import com.springboot.reditclone.demo.model.Post;
 import com.springboot.reditclone.demo.model.Vote;
@@ -20,14 +19,9 @@ public class VoteService {
 
     private final PostService postService;
 
-    private final AuthService authService;
-
     private final VoteRepository voteRepository;
 
-    private final PostMapper postMapper;
-
     private final VoteMapper voteMapper;
-
 
 
 
